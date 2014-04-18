@@ -1,0 +1,152 @@
+<HTML>
+<HEAD>
+<TITLE>The Star of Africa - Rules</TITLE>
+</HEAD>
+<BODY BACKGROUND="/star_of_Africa/docs/background.png">
+<CENTER><H1>Game rules</H1></CENTER>
+
+<H2>1. Foreword</H2>
+<P>This game is a computer adaptation of the Finnish board game &quot;Afrikan
+ t&auml;hti&quot; originally created by Kari Mannerla. The rules that came with
+ the original game were brief and simple - so simple as to being ambiguous
+ in certain situations. E.g. they took no stance as to the question whether
+ a player is allowed to continue &quot;on the fly&quot; from a sea route to
+ a land route. The game has therefore been played with countless small
+ varaitions in Finnish homes throughout the decades, the players simply
+ deciding beforehand on the minutiae of the rules. Such disambiguation is
+ naturally not acceptable when making a computer game, and therefore the
+ player is encouraged to read through <I>these</I> rules, even should he
+ already be aquainted with the game.</P>
+
+<P>It should also be noted that in 2005 the original rules were officially
+ amended with a rule stating that a pennyless player may still use sea routes,
+ moving 2 steps per turn without rolling the dice. This game however follows
+ the original rules which do not allow this. A future version may include the
+ option to choose which ruleset to use, but for now it's the old rules that
+ count.</P>
+
+<H2>2. The general setting</H2>
+<P>The star of Africa is a board game for 2-5 players, out of which at least
+ one must be human. The rest can either be human or computer AI players. The
+ game is regarded suitable for players of age 4 and up.
+ The board consists of a map of Africa, with routes connecting the various
+ places by land, sea and air. There are 30 places (cities) on the map that
+ contain tokens, which may be collected by the players. The tokens are shuffled
+ and placed face down - one on each city - before the game begins. (The computer
+does this automatically.)</P>
+<P>Before the game starts all players must choose whether to start at Tangier
+or Cairo (marked with big red circles on the board). The objective of the game
+is to find the token that
+holds the Star of Africa, and return with it to either one of the starting
+points. In the original game, the players determined the starting order by
+diceroll. In the computer version the order is automatically randomized by the
+computer.</P>
+
+<H2>3. Moving</H2>
+<H3>3.1. Moving by land</H3>
+<P>A player may move by land by rolling the dice, and moving the number of steps
+indicated by the dice. Should the player on his path, come upon a city he may,
+should he so choose, stop in the city even if the number of steps taken were
+fewer than indicated by the dice.</P>
+
+<H3>3.2. Moving by sea</H3>
+<P>A player may move by sea by paying the &pound;100 boarding fee, which is the
+same regardless of the distance traveled, and then rolling the dice, and moving
+ on the blue sea tiles, the number of steps indicated by the dice. After
+ boarding a ship he is then shipbound for the destination he chose, and may not
+ change the destination, even if the sea route in question diverges in a
+ manner that would make a destination change possible, was it a land route. 
+(After all he is just a passenger on a ship, and the ship won't change course
+ just because a passenger changed his mind.)</P>
+<P>Both boarding and disembarking take some time, and a player may therefore not
+board or disembark &quot;on the fly&quot;. I.e. to use dice points exceeding
+ either the source or the destination of the sea route, to move on land.</P>
+
+<H3>3.3. Moving by air</H3>
+<P>A player may move along the air routes (red lines connecting two cities) by
+ paying the &pound;300 boarding fee, and moving his gamepiece to the destination
+ without rolling the dice. Just like with the fee for boarding a ship, the fee
+ is the same regardless of the distance traveled.</P>
+
+<H2>4. The tokens</H2>
+<H3>4.1. Opening a token</H3>
+<P>A player may open a token he is standing on by either paying &pound;100 or
+ - if he is out of money, or for some reason does not want to spend the money
+ he has - by rolling the dice and getting a 4 or higher. A diceroll spent on
+ turning a token may not be used for moving regardless of whether the roll was
+ a success or not. For this reason the intent to roll for the token must always
+ be signalled prior to rolling.</P>
+<P>The player may buy the token immediately upon arriving, provided he has the
+ necessary funds to do so. Should he desire to open the token by diceroll, he
+ must however await the next turn. If the player starts his turn, with money in
+his pocket, on a token that he for whatever reason decided not to buy the
+previous turn, he may buy it immediately if he so chooses, but he may no longer
+move that turn. He may also not buy the token on the same turn as making a
+failed attempt at opening it by rolling.</P>
+
+<H3>4.2. Token types</H3>
+<P>There are 7 different kinds of tokens, each having its own significance:</P>
+<TABLE BORDER="1">
+<TR><TD><B>Token</B></TD><TD><B>Number of tokens</B></TD><TD><B>Effect</B></TD></TR>
+<TR><TD>Blank</TD><TD>12</TD><TD>Nothing happens.</TD></TR>
+<TR><TD>Horseshoe</TD><TD>5</TD><TD>Prior to the discovery of the Star,<BR>nothing happens. After the discovery<BR>it serves as a substitute for the Star.</TD></TR>
+<TR><TD>Robber</TD><TD>3</TD><TD>Player loses all his money.</TD></TR>
+<TR><TD>Topaz (Yellow gemstone)</TD><TD>4</TD><TD>Player receives &pound;300.</TD></TR>
+<TR><TD>Emerald (Green gemstone)</TD><TD>3</TD><TD>Player receives &pound;500.</TD></TR>
+<TR><TD>Ruby (Red gemstone)</TD><TD>2</TD><TD>Player receives &pound;1000.</TD></TR>
+<TR><TD>The Star of Africa (Very big diamond)</TD><TD>1</TD><TD>Player may now race to one of the<BR>starting points in order to win.</TD></TR>
+</TABLE>
+
+<H2>5. Special places</H2>
+<P>The following places carry special significance:</P>
+<UL>
+<LI><B>Gold Coast</B> - Gemstones found here are worth twice their oridinary
+ value.
+<LI><B>Slave Coast</B> - A player who draws a blank token here will be enslaved
+ and unable to move for 3 turns.
+<LI><B>Capetown</B> - The first player to arrive here will receive a &pound;500
+ bonus.
+<LI><B>St. Helena</B> - The tiles on both sides of the island (marked with dark
+ circles) are pirate infested waters. Any player who lands upon these will be
+ captured until he manages to roll a 1 or 2.
+<LI><B>Sahara desert</B> - The tile 2 steps east of Sahara (marked with a dark
+ circle) is the home of hostile beduins. A player who lands here will be
+ captured until he rolls a 1 or 2.
+</UL>
+
+<H2>6. Players unable to win</H2>
+<P>A player who doesn't have even a theoretical chance of winning the game is
+ removed from the game. His gamepiece will be left where it was, his status 
+ will be set to &quot;STRANDED&quot;, and he will no longer be given a turn
+ to do anything. This happens if any of the following scenarios occur:</P>
+<UL>
+<LI>The player becomes stranded on an island without any means to get off. (The
+ classical way to get stranded is picking up a robber on St. Helena.)
+<LI>The player becomes &quot;stranded&quot; on the mainland without money,
+ while all the remaining tokens are on islands. The player in question has
+ neither the Star nor an effective substitute.
+<LI>The Star of Africa has been found, as have all the 5 horseshoes. The player
+ in question has neither the Star nor an effective substitute.
+</UL>
+<P>Should all players become unable to win, the game is declared over without
+ a winner being declared.</P>
+
+<H2>7. Winning</H2>
+<P>The first player to transport either the Star of Africa, or a horseshoe
+ found <I>after</I> the discovery of the Star, to either one of the starting
+ points (Tangier or Cairo) is the winner.</P>
+<UL>
+<LI>A player does not have to return to the same place he started from. Either
+starting point will do.
+<LI>Just like with the cities, it is <I>not</I> required that the player roll
+ the exact number of steps that will take him to the finish line. Rolling that
+ number or greater is sufficient.
+<LI>There can be only one winner. Finishing &quot;on the same turn&quot; as the
+ winner does not count as a draw.
+<LI>If all the horseshoes have been discovered by the time the Star is found
+ and the discoverer himself isn't stranded, he will instantly be declared the
+ winner.
+<LI>Robbers only steal the player's money. They do not take the Star or the
+ horseshoe substitutes.
+</BODY>
+</HTML>

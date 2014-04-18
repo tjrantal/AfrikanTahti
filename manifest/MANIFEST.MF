@@ -1,0 +1,2 @@
+Main-Class: star_of_Africa.GameSetupMenu
+

@@ -1,0 +1,33 @@
+<!-- bluetoothTest ANT build system -->
+<project name="Start of Africa" default="jar" basedir=".">
+	<description>
+		Ant build system for Start of Africa
+	</description>
+
+	<!-- set global properties for this build -->
+	<property environment="env"/>
+	<property name="JAVA_HOME" location="${env.JAVA_HOME}" />
+	<property name="javasrc" location="src/" />
+	<property name="resource" location="rsrc/" />
+	<property name="build" location="build" />
+	<property name="classes" location="${build}/java" />
+	<property name="jarRsrc" location="${build}/rsrc" />
+	<property name="rsrcTarget" location="${jarRsrc}/star_of_Africa" />
+
+	<!-- Initialize -->
+	<target name="javacompile" description="Compile Java source" >
+		<mkdir dir="${classes}"/>
+		<javac source="1.5" srcdir="${javasrc}" destdir="${classes}" nowarn="on">
+		</javac>
+	</target>
+  
+	<target name="jar" depends="javacompile" description="Create Jar file" >
+		<copy todir="${rsrcTarget}">
+			<fileset dir="${resource}"/>
+		</copy>
+		<jar jarfile="${build}/StartOfAfrica.jar" basedir="${classes}" manifest="manifest/MANIFEST.MF">
+			<fileset dir="${jarRsrc}"/>
+		</jar>
+	</target>
+  
+</project>
