@@ -42,7 +42,7 @@ public class Place {
 	private String name = ""; // Only cities and starting points have names.
 	
 	/**
-	 * Constructs a palce.
+	 * Constructs a place.
 	 * 
 	 * @param x		the x-coordinate of the place relative to the original unresized map
 	 * @param y		the y-coordinate of the place relative to the original unresized map

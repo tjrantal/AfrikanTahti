@@ -51,7 +51,7 @@ public class Map extends JPanel implements MouseListener {
 	private final int HEIGHT = 2373;
 	private final int PIECE_SCALE_CONSTANT = 60; // Determined by trial and error
 	private final int PIECE_SEPARATION_CONSTANT = 10; // Distance between pieces that end up in the same place. (Also found by T&E)
-	private final int ANIMATION_FRAME_DELAY = 83; // 1000 / 12 ~= 83. I.e. will give an animation of 12 fps
+	private final int ANIMATION_FRAME_DELAY = 20;//83; // 1000 / 12 ~= 83. I.e. will give an animation of 12 fps
 	private double scale; // Used to calculate the actual size of the images, given original image size, monitor resolution and zoom level
 	private boolean tokensRevealed = false; // After the game all tokens are revealed, and this class must know this
     private ImageIcon gameBoard,tokenBack,cityRing,smallRing;
