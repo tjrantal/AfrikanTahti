@@ -85,8 +85,10 @@ public class PlayingField implements ChangeListener,ActionListener {
 	private JLabel eventLabel = new JLabel();
 	private JLabel messageLabel = new JLabel(bundle.getString("gameBegin"));
 	private JButton rollDice = new JButton(bundle.getString("rollDice"));
+	private JButton rollToken = new JButton(bundle.getString("rollToken"));
 	private JButton endTurn = new JButton(bundle.getString("endTurn"));
 	private JButton boardShip = new JButton(bundle.getString("boardShip"));
+	private JButton boardShipNoMoney = new JButton(bundle.getString("boardShipNoMoney"));
 	private JButton boardPlane = new JButton(bundle.getString("boardPlane"));
 	private JButton buyToken = new JButton(bundle.getString("buyToken"));
 	private JButton quit = new JButton(bundle.getString("quit"));
@@ -246,13 +248,17 @@ public class PlayingField implements ChangeListener,ActionListener {
 		buttonPanel.setLayout(new GridLayout(6,1));
 		buttonPanel.add(rollToTurn);
 		buttonPanel.add(rollDice);
+		buttonPanel.add(rollToken);
 		buttonPanel.add(buyToken);
 		buttonPanel.add(boardShip);
+		buttonPanel.add(boardShipNoMoney);
 		buttonPanel.add(boardPlane);
 		buttonPanel.add(endTurn);
 		rollDice.addActionListener(this);
+		rollToken.addActionListener(this);
 		buyToken.addActionListener(this);
 		boardShip.addActionListener(this);
+		boardShipNoMoney.addActionListener(this);
 		boardPlane.addActionListener(this);
 		endTurn.addActionListener(this);
 		right.add(buttonPanel);
@@ -305,6 +311,7 @@ public class PlayingField implements ChangeListener,ActionListener {
 
 		// Is the player shipbound for a destination?
 		if (player[turn].getLockedDestination() != null) {
+			/*USE THIS BIT FOR SEA ROUTE WITHOUT MONEY begin */
 			ArrayList<Place> tempRoute = getSeaRoute(player[turn].getPlace(),null);
 			// Only reason to make the moves a hashset is that it can use the same map.showMoveOptions as everything else
 			HashSet<Place> possibleMove = new HashSet<Place>();
@@ -316,6 +323,7 @@ public class PlayingField implements ChangeListener,ActionListener {
 				possibleMove.add(tempRoute.get(dice));
 			}
 			map.showMoveOptions(possibleMove);
+			/*USE THIS BIT FOR SEA ROUTE WITHOUT MONEY end*/
 		}
 		else {
 			HashSet<Place> connected = new HashSet<Place>();
@@ -1850,13 +1858,17 @@ public class PlayingField implements ChangeListener,ActionListener {
 	 * @return		<code>true</code> if the player is stranded, otherwise <code>false</code>.
 	 */
 	public boolean checkStranded(Player play) {
+		/*TAKEN OUT BY THE NEW RULE, a player cannot be stranded*/
 		// Is the player pennyless, and without tokens on one of the one-token-only-islands?
+		
+		/*
 		if (play.getPlace().getName().equals("Canary Islands") || play.getPlace().getName().equals("St. Helena")) {
 			if (play.getPlace().getToken() == null && play.getMoney() < 100) {
 				setStranded(play);
 				return true;
 			}
 		}
+		
 		boolean temp = true;
 		if (play.getPlace().getX() >= 1447 && play.getPlace().getY() >= 1738) { // Is player on Madagascar?
 			for (Place p : cities) {
@@ -1871,13 +1883,16 @@ public class PlayingField implements ChangeListener,ActionListener {
 				return true;
 			}
 		}
+		
 		// Is the player "stranded" on the mainland without having found the star (or horseshoe)? (I.e. all the tiles that 
 		// are left, are on islands, and the player has no money to get there)
+		
 		if (tokensOnlyLeftOnIslands() && play.getMoney() < 100 && !play.hasFoundTheStar() 
 				&& play.getLockedDestination() == null && !playerOnIsland(play)) {
 			setStranded(play);
 			return true;
 		}
+		*/
 		return false;
 	}
 
@@ -2050,7 +2065,9 @@ public class PlayingField implements ChangeListener,ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == rollDice) {
 			rollDice.setEnabled(false);
+			rollToken.setEnabled(false);
 			boardShip.setEnabled(false);
+			boardShipNoMoney.setEnabled(false);
 			boardPlane.setEnabled(false);
 			// Roll the dice
 			int rand = 1 + (int)(Math.random() * 6);
@@ -2081,12 +2098,34 @@ public class PlayingField implements ChangeListener,ActionListener {
 				endTurn.setEnabled(true);
 			}
 		}
+		
+		/*Added to just roll for token*/
+		if (e.getSource() == rollToken) {
+			rollDice.setEnabled(false);
+			rollToken.setEnabled(false);
+			boardShip.setEnabled(false);
+			boardShipNoMoney.setEnabled(false);
+			boardPlane.setEnabled(false);
+			// Roll the dice
+			int rand = 1 + (int)(Math.random() * 6);
+			showDiceRoll(rand);
+			if (rand >= 4) {
+				openToken();
+				rollForToken[turn] = false;
+			}
+			else {
+				buyToken.setEnabled(false);
+				endTurn.setEnabled(true);
+			}
+		}
 
 		if (e.getSource() == buyToken) {
 			rollToTurn.setEnabled(false);
 			buyToken.setEnabled(false);
 			boardPlane.setEnabled(false);
 			boardShip.setEnabled(false);
+			rollToken.setEnabled(false);
+			boardShipNoMoney.setEnabled(false);
 			rollDice.setEnabled(false);
 			player[turn].setMoney(player[turn].getMoney() - 100);
 			openToken();
@@ -2121,8 +2160,15 @@ public class PlayingField implements ChangeListener,ActionListener {
 			rollDice.setEnabled(true);
 			rollToTurn.setSelected(rollForToken[turn] && player[turn].getPlace().getToken() != null);
 			rollToTurn.setEnabled(player[turn].getPlace().getToken() != null);
+			
+			rollToken.setEnabled(player[turn].getPlace().getToken() != null);
+			
+			
 			buyToken.setEnabled(player[turn].getPlace().getToken() != null && player[turn].getMoney() >= 100);
 			boardShip.setEnabled(!player[turn].getPlace().getConnectedBySea().isEmpty() && player[turn].getMoney() >= 100 && player[turn].getLockedDestination() == null);
+			
+			boardShipNoMoney.setEnabled(!player[turn].getPlace().getConnectedBySea().isEmpty() && player[turn].getLockedDestination() == null);
+			
 			boardPlane.setEnabled(!player[turn].getPlace().getConnectedByAir().isEmpty() && player[turn].getMoney() >= 300);
 
 			// Is the player stuck at Slave Coast?
@@ -2132,6 +2178,8 @@ public class PlayingField implements ChangeListener,ActionListener {
 				boardShip.setEnabled(false);
 				boardPlane.setEnabled(false);
 				rollToTurn.setEnabled(false);
+				rollToken.setEnabled(false);
+				boardShipNoMoney.setEnabled(false);
 				messageLabel.setText(bundle.getString("still")+" "+player[turn].getTurnsLeftAsSlave()+" "+bundle.getString("turnsLeft"));
 				if (player[turn].isHuman()) { // The counting for the computer is handled by the AIPLayer class
 					player[turn].setTurnsLeftAsSlave(player[turn].getTurnsLeftAsSlave() - 1);
@@ -2151,6 +2199,8 @@ public class PlayingField implements ChangeListener,ActionListener {
 				boardPlane.setEnabled(false);
 				rollToTurn.setEnabled(false);
 				buyToken.setEnabled(false);
+				rollToken.setEnabled(false);
+				boardShipNoMoney.setEnabled(false);
 				aip.makeMove(turn);
 			}
 		}
@@ -2179,6 +2229,8 @@ public class PlayingField implements ChangeListener,ActionListener {
 				rollDice.setEnabled(false);
 				boardShip.setEnabled(false);
 				boardPlane.setEnabled(false);
+				rollToken.setEnabled(false);
+				boardShipNoMoney.setEnabled(false);
 				player[turn].setMoney(player[turn].getMoney() - 300);
 				playerMoney[turn].setText(" Pound " + player[turn].getMoney());
 				moveMade(destination);
@@ -2218,6 +2270,8 @@ public class PlayingField implements ChangeListener,ActionListener {
 				endTurn.setEnabled(false);
 				rollToTurn.setEnabled(false);
 				rollToTurn.setSelected(false);
+				rollToken.setEnabled(false);
+				boardShipNoMoney.setEnabled(false);
 				player[turn].setMoney(player[turn].getMoney() - 100);
 				playerMoney[turn].setText(" Pound " + player[turn].getMoney());
 				player[turn].setLockedDestination(destination);
