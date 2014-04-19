@@ -29,6 +29,7 @@ public class Player {
 	private boolean human;
 	private Place place;
 	private Place lockedDestination; // When seabound for a destination.
+	private boolean boardedNoMoney;	//When seabound without money
 	private boolean tangier;
 	private int money;
 	private boolean hasFoundTheStar;
@@ -56,6 +57,7 @@ public class Player {
 		hasFoundTheStar = false;
 		captured = false;
 		stranded = false;
+		boardedNoMoney = false;
 	}
 	
 	public boolean isCaptured() {
@@ -96,6 +98,14 @@ public class Player {
 
 	public Place getLockedDestination() {
 		return lockedDestination;
+	}
+	
+	public boolean getBoardedNoMoney(){
+		return boardedNoMoney;
+	}
+	
+	public void setBoardedNoMoney(boolean value){
+		boardedNoMoney = value;
 	}
 	
 	public int getTurnsLeftAsSlave() {

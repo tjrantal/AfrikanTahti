@@ -400,6 +400,8 @@ public class PlayingField implements ChangeListener,ActionListener {
 		buyToken.setEnabled(false);
 		boardPlane.setEnabled(false);
 		boardShip.setEnabled(false);
+		rollToken.setEnabled(false);
+		boardShipNoMoney.setEnabled(false);
 		endTurn.setEnabled(false);
 		if (screenSize > 2) {
 			quit.setVisible(true);
@@ -2069,6 +2071,14 @@ public class PlayingField implements ChangeListener,ActionListener {
 			boardShip.setEnabled(false);
 			boardShipNoMoney.setEnabled(false);
 			boardPlane.setEnabled(false);
+			
+			/*If boarded without money on an unpaid ship voyage*/
+			if (player[turn].getBoardedNoMoney()) {
+				calculateMoveOptions(2);
+				return;
+			}
+			
+			
 			// Roll the dice
 			int rand = 1 + (int)(Math.random() * 6);
 			showDiceRoll(rand);
@@ -2168,6 +2178,7 @@ public class PlayingField implements ChangeListener,ActionListener {
 			boardShip.setEnabled(!player[turn].getPlace().getConnectedBySea().isEmpty() && player[turn].getMoney() >= 100 && player[turn].getLockedDestination() == null);
 			
 			boardShipNoMoney.setEnabled(!player[turn].getPlace().getConnectedBySea().isEmpty() && player[turn].getLockedDestination() == null);
+			player[turn].setBoardedNoMoney(!(player[turn].getLockedDestination() == null));
 			
 			boardPlane.setEnabled(!player[turn].getPlace().getConnectedByAir().isEmpty() && player[turn].getMoney() >= 300);
 
@@ -2277,6 +2288,49 @@ public class PlayingField implements ChangeListener,ActionListener {
 				player[turn].setLockedDestination(destination);
 			}
 		}
+
+		/*Board ship without money*/
+		if (e.getSource() == boardShipNoMoney) {
+			HashSet<Place> temp = new HashSet<Place>();
+			for (Place p : player[turn].getPlace().getConnectedBySea()) {
+				temp.addAll(getConnectedBySea(p,player[turn].getPlace()));
+			}
+			HashSet<Place> connectedCities = new HashSet<Place>();
+			for (Place p : temp) {
+				if (p.isCity() || p.isStart()) {
+					connectedCities.add(p);
+				}
+			}
+			Object[] possibilities = new Object[connectedCities.size()];
+			int i=0;
+			for (Place p : connectedCities) {
+				possibilities[i] = p.getName();
+				i++;
+			}
+			String str = (String)JOptionPane.showInputDialog(frame,bundle.getString("selectDest"),bundle.getString("takeShipTo"),
+					JOptionPane.PLAIN_MESSAGE,null,possibilities,possibilities[0]);
+
+			Place destination = null;
+			for (Place p : connectedCities) {
+				if (p.getName().equals(str)) {
+					destination = p;
+				}
+			}
+			if (destination != null) {
+				rollDice.setEnabled(true);
+				boardShip.setEnabled(false);
+				boardPlane.setEnabled(false);
+				endTurn.setEnabled(false);
+				rollToTurn.setEnabled(false);
+				rollToTurn.setSelected(false);
+				rollToken.setEnabled(false);
+				boardShipNoMoney.setEnabled(false);
+				player[turn].setBoardedNoMoney(true);
+				player[turn].setLockedDestination(destination);
+			}
+		}
+		
+
 
 		if (e.getSource() == newGame) {
 			if (same.isSelected()) { // If the same players are desired...
