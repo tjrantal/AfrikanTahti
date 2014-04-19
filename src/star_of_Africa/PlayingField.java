@@ -94,7 +94,7 @@ public class PlayingField implements ChangeListener,ActionListener {
 	private JButton quit = new JButton(bundle.getString("quit"));
 	private JButton newGame = new JButton(bundle.getString("newGame"));
 	private JCheckBoxMenuItem same = new JCheckBoxMenuItem(bundle.getString("samePlayers"));
-	private JCheckBoxMenuItem rollToTurn = new JCheckBoxMenuItem(bundle.getString("rollToTurn"));
+	//private JCheckBoxMenuItem rollToTurn = new JCheckBoxMenuItem(bundle.getString("rollToTurn"));
 	private double zoomLevel = 1.0;
 	private int turn = 0;
 	private int horseshoesFound = 0;
@@ -102,7 +102,7 @@ public class PlayingField implements ChangeListener,ActionListener {
 	private boolean capetownHasBeenVisited = false;
 	private boolean gameOver = false;
 	private Player[] player;
-	private boolean[] rollForToken;
+	//private boolean[] rollForToken;
 	private HashSet<Place> places = new HashSet<Place>();
 	private HashSet<Place> cities = new HashSet<Place>();
 	private Place[] startingPoints = new Place[2];
@@ -121,10 +121,10 @@ public class PlayingField implements ChangeListener,ActionListener {
 	public PlayingField(Player[] player, int height) {
 		this.player = player;
 		this.height = height;
-		rollForToken = new boolean[player.length];
-		for (int i=0; i<rollForToken.length; i++) {
-			rollForToken[i] = false;
-		}
+		//rollForToken = new boolean[player.length];
+		//for (int i=0; i<rollForToken.length; i++) {
+		//	rollForToken[i] = false;
+		//}
 		// First we adjust some visual parameters according to the monitor resolution we're dealing with.
 		if (height >= 1200) {
 			eventWinSize = 180;
@@ -186,7 +186,7 @@ public class PlayingField implements ChangeListener,ActionListener {
 		playerTokens = new JPanel[player.length];
 		playerGamePiece = new JLabel[player.length];
 		subpanel = new JPanel[player.length];
-		rollToTurn.setEnabled(false);
+		//rollToTurn.setEnabled(false);
 		buyToken.setEnabled(false);
 		endTurn.setEnabled(false);
 		frame.add(whole);
@@ -245,8 +245,8 @@ public class PlayingField implements ChangeListener,ActionListener {
 			subpanel[i].setBorder(box);
 		}
 		// Set up the controls
-		buttonPanel.setLayout(new GridLayout(6,1));
-		buttonPanel.add(rollToTurn);
+		buttonPanel.setLayout(new GridLayout(7,1));
+		//buttonPanel.add(rollToTurn);
 		buttonPanel.add(rollDice);
 		buttonPanel.add(rollToken);
 		buttonPanel.add(buyToken);
@@ -396,7 +396,7 @@ public class PlayingField implements ChangeListener,ActionListener {
 		soundPlayer.play("snd/cheers.wav");
 		gameOver = true;
 		rollDice.setEnabled(false);
-		rollToTurn.setEnabled(false);
+		//rollToTurn.setEnabled(false);
 		buyToken.setEnabled(false);
 		boardPlane.setEnabled(false);
 		boardShip.setEnabled(false);
@@ -426,7 +426,7 @@ public class PlayingField implements ChangeListener,ActionListener {
 	private void gameUnwinnable(String str) {
 		gameOver = true;
 		rollDice.setEnabled(false);
-		rollToTurn.setEnabled(false);
+		//rollToTurn.setEnabled(false);
 		buyToken.setEnabled(false);
 		boardPlane.setEnabled(false);
 		boardShip.setEnabled(false);
@@ -2094,7 +2094,8 @@ public class PlayingField implements ChangeListener,ActionListener {
 					return;
 				}				
 			}
-			
+			calculateMoveOptions(rand);
+			/*
 			rollForToken[turn] = rollToTurn.isSelected();
 			if (!rollToTurn.isSelected()) {
 				calculateMoveOptions(rand);
@@ -2107,6 +2108,7 @@ public class PlayingField implements ChangeListener,ActionListener {
 				buyToken.setEnabled(false);
 				endTurn.setEnabled(true);
 			}
+			*/
 		}
 		
 		/*Added to just roll for token*/
@@ -2121,7 +2123,7 @@ public class PlayingField implements ChangeListener,ActionListener {
 			showDiceRoll(rand);
 			if (rand >= 4) {
 				openToken();
-				rollForToken[turn] = false;
+				//rollForToken[turn] = false;
 			}
 			else {
 				buyToken.setEnabled(false);
@@ -2130,7 +2132,7 @@ public class PlayingField implements ChangeListener,ActionListener {
 		}
 
 		if (e.getSource() == buyToken) {
-			rollToTurn.setEnabled(false);
+			//rollToTurn.setEnabled(false);
 			buyToken.setEnabled(false);
 			boardPlane.setEnabled(false);
 			boardShip.setEnabled(false);
@@ -2168,8 +2170,8 @@ public class PlayingField implements ChangeListener,ActionListener {
 			// Set default view
 			endTurn.setEnabled(false);
 			rollDice.setEnabled(true);
-			rollToTurn.setSelected(rollForToken[turn] && player[turn].getPlace().getToken() != null);
-			rollToTurn.setEnabled(player[turn].getPlace().getToken() != null);
+			//rollToTurn.setSelected(rollForToken[turn] && player[turn].getPlace().getToken() != null);
+			//rollToTurn.setEnabled(player[turn].getPlace().getToken() != null);
 			
 			rollToken.setEnabled(player[turn].getPlace().getToken() != null);
 			
@@ -2188,7 +2190,7 @@ public class PlayingField implements ChangeListener,ActionListener {
 				rollDice.setEnabled(false);
 				boardShip.setEnabled(false);
 				boardPlane.setEnabled(false);
-				rollToTurn.setEnabled(false);
+				//rollToTurn.setEnabled(false);
 				rollToken.setEnabled(false);
 				boardShipNoMoney.setEnabled(false);
 				messageLabel.setText(bundle.getString("still")+" "+player[turn].getTurnsLeftAsSlave()+" "+bundle.getString("turnsLeft"));
@@ -2198,8 +2200,8 @@ public class PlayingField implements ChangeListener,ActionListener {
 			}
 
 			if (player[turn].getPlace().getName().equals("Canary Islands") || player[turn].getPlace().getName().equals("St. Helena")) {
-				rollToTurn.setEnabled(player[turn].getPlace().getToken() != null);
-				rollToTurn.setSelected(player[turn].getPlace().getToken() != null);
+				//rollToTurn.setEnabled(player[turn].getPlace().getToken() != null);
+				//rollToTurn.setSelected(player[turn].getPlace().getToken() != null);
 				rollDice.setEnabled(player[turn].getPlace().getToken() != null);
 			}
 			
@@ -2208,7 +2210,7 @@ public class PlayingField implements ChangeListener,ActionListener {
 				rollDice.setEnabled(false);
 				boardShip.setEnabled(false);
 				boardPlane.setEnabled(false);
-				rollToTurn.setEnabled(false);
+				//rollToTurn.setEnabled(false);
 				buyToken.setEnabled(false);
 				rollToken.setEnabled(false);
 				boardShipNoMoney.setEnabled(false);
@@ -2279,8 +2281,8 @@ public class PlayingField implements ChangeListener,ActionListener {
 				boardShip.setEnabled(false);
 				boardPlane.setEnabled(false);
 				endTurn.setEnabled(false);
-				rollToTurn.setEnabled(false);
-				rollToTurn.setSelected(false);
+				//rollToTurn.setEnabled(false);
+				//rollToTurn.setSelected(false);
 				rollToken.setEnabled(false);
 				boardShipNoMoney.setEnabled(false);
 				player[turn].setMoney(player[turn].getMoney() - 100);
@@ -2321,8 +2323,8 @@ public class PlayingField implements ChangeListener,ActionListener {
 				boardShip.setEnabled(false);
 				boardPlane.setEnabled(false);
 				endTurn.setEnabled(false);
-				rollToTurn.setEnabled(false);
-				rollToTurn.setSelected(false);
+				//rollToTurn.setEnabled(false);
+				//rollToTurn.setSelected(false);
 				rollToken.setEnabled(false);
 				boardShipNoMoney.setEnabled(false);
 				player[turn].setBoardedNoMoney(true);
