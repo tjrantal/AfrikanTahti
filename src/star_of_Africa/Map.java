@@ -391,7 +391,7 @@ public class Map extends JPanel implements MouseListener {
 					pieceLabel[turn].setBounds(x, y, pieceLabel[turn].getWidth(), pieceLabel[turn].getHeight());
 					scrollPane.imageUpdate(image, -1, 0, 0, gameBoard.getIconWidth(), gameBoard.getIconHeight());
 					this.paintImmediately(newx + layerPane.getX(), newy + layerPane.getY(), width, height);
-					time += ANIMATION_FRAME_DELAY;
+					time += ANIMATION_FRAME_DELAY/(destination.getRouteTo().size()-1);
 					try {
 					    Thread.sleep(Math.max(0,time - System.currentTimeMillis()));
 					}
