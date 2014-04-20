@@ -25,7 +25,7 @@
 		<copy todir="${rsrcTarget}">
 			<fileset dir="${resource}"/>
 		</copy>
-		<jar jarfile="${build}/StartOfAfrica.jar" basedir="${classes}" manifest="manifest/MANIFEST.MF">
+		<jar jarfile="${build}/StarOfAfrica.jar" basedir="${classes}" manifest="manifest/MANIFEST.MF">
 			<fileset dir="${jarRsrc}"/>
 		</jar>
 	</target>

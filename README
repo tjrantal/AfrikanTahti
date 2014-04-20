@@ -2,4 +2,5 @@ Star of Africa (Afrikan tähti) board game
 
 Source copied from http://users.metropolia.fi/~kamaj/Projektit/xml_tiedostot/Afrikan_tahti.xml. The original implementation has been written by Daniel Suni 2009, and published with GPL license. Look fof COPYING files for further details on the licensing. The folder rsrc/doc includes documentation.
 
-Modified by Timo Rantalainen 2014 (tjrantal at gmail dot com), to reflect the current rules allowing boarding a ship, and advancing up to two steps per turn without payment. Ant build script added as well.
+Modified by Timo Rantalainen 2014 (tjrantal at gmail dot com), to reflect the current rules allowing boarding a ship, and advancing up to two steps per turn without payment. The AI does not work in this version since I didn't update the AI rules (and don't intend to either. AI thus plays with the old rules, and if it gets stranded the game enters an infinite loop).
+
