@@ -127,6 +127,10 @@ public class Player {
 	public void setPlace(Place place) {
 		this.place = place;
 	}
+	
+	public void resetRoute() {
+		place.resetRoute();
+	}
 
 	public void setTurnsLeftAsSlave(int turnsLeftAsSlave) {
 		this.turnsLeftAsSlave = turnsLeftAsSlave;

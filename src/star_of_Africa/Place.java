@@ -19,6 +19,7 @@
 package star_of_Africa;
 
 import java.util.HashSet;
+import java.util.ArrayList;	/**/
 
 /**
  * This class represents any place on the map where it is possible to move
@@ -35,6 +36,7 @@ public class Place {
 	private HashSet<Place> connectedByLand = new HashSet<Place>();
 	private HashSet<Place> connectedBySea = new HashSet<Place>();
 	private HashSet<Place> connectedByAir = new HashSet<Place>();
+	private ArrayList<Place> routeTo = new ArrayList<Place>();	/*To store the route to this place*/
 	private boolean city;  // Is this a city or not?
 	private boolean start; // Is this a starting point or not?
 	private boolean hostile; // True for the special places near St. Helena and Sahara, where the player can be captured
@@ -56,6 +58,39 @@ public class Place {
 		this.start = start;
 		hostile = false;
 	}
+
+	/**Return a copy of the route to this place*/
+	public ArrayList<Place> getRouteTo(){
+		ArrayList<Place> route = new ArrayList<Place>();
+		for (int i = 0;i<routeTo.size();++i){
+			route.add(routeTo.get(i));
+		}
+		return route;
+	}
+	
+	/**Set the route to this place*/
+	public void setRouteTo(ArrayList<Place> arr){
+		routeTo = arr;
+	}
+	
+	/**Reset the route to this place*/
+	public void resetRoute(){
+		routeTo.clear();
+	}
+	
+	/**Append to the route to this place*/
+	public void appendRouteTo(Place place){
+		routeTo.add(place);
+	}
+	
+	/**Print the route to this place*/
+	public void printRouteTo(){
+		for (int r = 0;r<routeTo.size();++r){
+			System.out.print("X "+routeTo.get(r).getX()+" Y "+routeTo.get(r).getY()+" ");
+		}
+		System.out.println("");
+	}
+
 
 	public HashSet<Place> getConnectedByLand() {
 		return connectedByLand;

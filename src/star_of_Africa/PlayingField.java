@@ -311,7 +311,7 @@ public class PlayingField implements ChangeListener,ActionListener {
 
 		// Is the player shipbound for a destination?
 		if (player[turn].getLockedDestination() != null) {
-			/*USE THIS BIT FOR SEA ROUTE WITHOUT MONEY begin */
+			player[turn].resetRoute();
 			ArrayList<Place> tempRoute = getSeaRoute(player[turn].getPlace(),null);
 			// Only reason to make the moves a hashset is that it can use the same map.showMoveOptions as everything else
 			HashSet<Place> possibleMove = new HashSet<Place>();
@@ -323,18 +323,37 @@ public class PlayingField implements ChangeListener,ActionListener {
 				possibleMove.add(tempRoute.get(dice));
 			}
 			map.showMoveOptions(possibleMove);
-			/*USE THIS BIT FOR SEA ROUTE WITHOUT MONEY end*/
 		}
 		else {
 			HashSet<Place> connected = new HashSet<Place>();
 			HashSet<Place> canMove = new HashSet<Place>();
 			HashSet<Place> temp = new HashSet<Place>(); // Required since you can't add to a set while iterating over it
-			connected.add(player[turn].getPlace());
+			player[turn].resetRoute();
+			Place tempOrigin = player[turn].getPlace();
+			tempOrigin.appendRouteTo(player[turn].getPlace());	/*Route begins from the current place*/
+			connected.add(tempOrigin);
 			// Iterate for n times where n = diceroll - 1, always adding all neighboring places
 			for (int i = 1 ; i < dice ; i++) {
 				for (Place p : connected) {
+					int connections = 0;
 					for (Place q : p.getConnectedByLand()) {
-						temp.add(q);
+						/*Append only, if it is not on the route already*/
+						++connections;
+						boolean doAdd = true;
+						for (int r = 0;r<p.getRouteTo().size();++r){
+							if (q.getX() == p.getRouteTo().get(r).getX() && q.getY() == p.getRouteTo().get(r).getY()){
+								doAdd = false;
+								break;
+							}
+						}
+						if (doAdd){
+						 	q.setRouteTo(p.getRouteTo());
+							q.appendRouteTo(q);
+							temp.add(q);
+							System.out.println("Step "+i+" connection "+connections+" routeLength "+q.getRouteTo().size());
+							q.printRouteTo();
+							System.out.println("");
+						}
 					}
 				}
 				connected.addAll(temp);
@@ -345,7 +364,20 @@ public class PlayingField implements ChangeListener,ActionListener {
 			for (Place p : connected) {
 				for (Place q : p.getConnectedByLand()) {
 					if (!connected.contains(q) || q.isCity() || q.isStart()) {
-						canMove.add(q);
+						/*Prevent adding duplicate*/
+						boolean doAdd = true;
+						for (int r = 0;r<p.getRouteTo().size();++r){
+							if (q.getX() == p.getRouteTo().get(r).getX() && q.getY() == p.getRouteTo().get(r).getY()){
+								doAdd = false;
+								break;
+							}
+						}
+						if (doAdd){
+						 	q.setRouteTo(p.getRouteTo());
+							q.appendRouteTo(q);
+							canMove.add(q);
+						}
+						
 					}
 				}
 			}
@@ -2031,6 +2063,7 @@ public class PlayingField implements ChangeListener,ActionListener {
 			player[turn].setLockedDestination(null);
 		}
 		map.showMove(destination, turn);
+		player[turn].resetRoute();	/*Reset route*/
 		map.refresh();
 		// Did the player win?
 		if (player[turn].hasFoundTheStar() && destination.isStart()) {

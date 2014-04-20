@@ -361,40 +361,80 @@ public class Map extends JPanel implements MouseListener {
      * 						and by implication which piece is to be moved.)
      */
     public void showMove(Place destination, int turn) {
-    	int startx = pieceLabel[turn].getX();
-    	int starty = pieceLabel[turn].getY();
-    	int destx = (int)(destination.getX()/scale - piece[turn].getIconWidth()/2.0);
-    	int desty = (int)(destination.getY()/scale - piece[turn].getIconHeight()/2.0);
-    	int deltax = startx - destx;
-    	int deltay = starty - desty;
-    	int width = piece[turn].getIconWidth() + Math.abs(deltax)/36 + 3; // Width of box that need to be repainted (+3 pixel margin)
-    	int height = piece[turn].getIconHeight() + Math.abs(deltay)/36 + 3 ; // Height
-    	int x = startx;
-    	int y = starty;
     	int newx, newy;
     	long time = System.currentTimeMillis();
-    	for (int i = 1 ; i <= 36 ; i++) { // 36 frames @ 12 fps = 3 sec
-    		newx = x;
-    		newy = y;
-    		x = (int)(startx - deltax*(i/36.0));
-    		y = (int)(starty - deltay*(i/36.0));
-    		if (deltax > 0) {
-    			newx = x;
+    	/*Move is animated here*/
+    	if (!destination.getRouteTo().isEmpty()){
+    		/*Go through steps to get to the destination*/
+    		for (int s = 1; s<destination.getRouteTo().size();++s){
+    			int startx = (int)(destination.getRouteTo().get(s-1).getX()/scale- piece[turn].getIconWidth()/2.0);
+				int starty = (int)(destination.getRouteTo().get(s-1).getY()/scale- piece[turn].getIconWidth()/2.0);
+				int destx = (int)(destination.getRouteTo().get(s).getX()/scale- piece[turn].getIconWidth()/2.0);
+				int desty = (int)(destination.getRouteTo().get(s).getY()/scale- piece[turn].getIconWidth()/2.0);
+				int deltax = startx - destx;
+				int deltay = starty - desty;
+				int width = piece[turn].getIconWidth() + Math.abs(deltax)/36 + 3; // Width of box that need to be repainted (+3 pixel margin)
+    	int height = piece[turn].getIconHeight() + Math.abs(deltay)/36 + 3 ; // Heigh
+				int x = startx;
+				int y = starty;
+				for (int i = 1 ; i <= 36 ; i++) { // 36 frames @ 12 fps = 3 sec
+					newx = x;
+					newy = y;
+					x = (int)(startx - deltax*(i/36.0));
+					y = (int)(starty - deltay*(i/36.0));
+					if (deltax > 0) {
+						newx = x;
+					}
+					if (deltay > 0) {
+						newy = y;
+					}
+					pieceLabel[turn].setBounds(x, y, pieceLabel[turn].getWidth(), pieceLabel[turn].getHeight());
+					scrollPane.imageUpdate(image, -1, 0, 0, gameBoard.getIconWidth(), gameBoard.getIconHeight());
+					this.paintImmediately(newx + layerPane.getX(), newy + layerPane.getY(), width, height);
+					time += ANIMATION_FRAME_DELAY;
+					try {
+					    Thread.sleep(Math.max(0,time - System.currentTimeMillis()));
+					}
+					catch (InterruptedException e) {
+					    e.printStackTrace();
+					}
+				}
     		}
-    		if (deltay > 0) {
-    			newy = y;
-    		}
-    		pieceLabel[turn].setBounds(x, y, pieceLabel[turn].getWidth(), pieceLabel[turn].getHeight());
-    		scrollPane.imageUpdate(image, -1, 0, 0, gameBoard.getIconWidth(), gameBoard.getIconHeight());
-    		this.paintImmediately(newx + layerPane.getX(), newy + layerPane.getY(), width, height);
-    		time += ANIMATION_FRAME_DELAY;
-    		try {
-    	        Thread.sleep(Math.max(0,time - System.currentTimeMillis()));
-    		}
-    		catch (InterruptedException e) {
-    	        e.printStackTrace();
-    		}
-    	}
+		
+		}else{	//Use straight line for flights, and ships
+			int startx = pieceLabel[turn].getX();
+			int starty = pieceLabel[turn].getY();
+			int destx = (int)(destination.getX()/scale - piece[turn].getIconWidth()/2.0);
+			int desty = (int)(destination.getY()/scale - piece[turn].getIconHeight()/2.0);
+			int deltax = startx - destx;
+			int deltay = starty - desty;
+			int width = piece[turn].getIconWidth() + Math.abs(deltax)/36 + 3; // Width of box that need to be repainted (+3 pixel margin)
+    	int height = piece[turn].getIconHeight() + Math.abs(deltay)/36 + 3 ; // Heigh
+			int x = startx;
+			int y = starty;		
+			for (int i = 1 ; i <= 36 ; i++) { // 36 frames @ 12 fps = 3 sec
+				newx = x;
+				newy = y;
+				x = (int)(startx - deltax*(i/36.0));
+				y = (int)(starty - deltay*(i/36.0));
+				if (deltax > 0) {
+					newx = x;
+				}
+				if (deltay > 0) {
+					newy = y;
+				}
+				pieceLabel[turn].setBounds(x, y, pieceLabel[turn].getWidth(), pieceLabel[turn].getHeight());
+				scrollPane.imageUpdate(image, -1, 0, 0, gameBoard.getIconWidth(), gameBoard.getIconHeight());
+				this.paintImmediately(newx + layerPane.getX(), newy + layerPane.getY(), width, height);
+				time += ANIMATION_FRAME_DELAY;
+				try {
+			        Thread.sleep(Math.max(0,time - System.currentTimeMillis()));
+				}
+				catch (InterruptedException e) {
+			        e.printStackTrace();
+				}
+			}
+		}
     	for (JLabel l : rings) {
         	layerPane.remove(l);
         }
