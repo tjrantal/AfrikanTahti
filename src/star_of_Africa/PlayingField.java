@@ -201,7 +201,7 @@ public class PlayingField implements ChangeListener,ActionListener {
 		if (screenSize > 2) {
 			right.add(Box.createVerticalStrut(38));
 		}
-		right.setPreferredSize(new Dimension(200,1200));
+		right.setPreferredSize(new Dimension(200,height-150));
 		// Set up the player status windows
 		for (int i=0; i<player.length; i++) {
 			playerName[i] = new JLabel(player[i].getName());
@@ -350,9 +350,9 @@ public class PlayingField implements ChangeListener,ActionListener {
 						 	q.setRouteTo(p.getRouteTo());
 							q.appendRouteTo(q);
 							temp.add(q);
-							System.out.println("Step "+i+" connection "+connections+" routeLength "+q.getRouteTo().size());
-							q.printRouteTo();
-							System.out.println("");
+							//System.out.println("Step "+i+" connection "+connections+" routeLength "+q.getRouteTo().size());
+							//q.printRouteTo();
+							//System.out.println("");
 						}
 					}
 				}
@@ -2255,6 +2255,7 @@ public class PlayingField implements ChangeListener,ActionListener {
 			// Convert names of connected places to objects, since that's what the JOptionPane demands
 			Object[] possibilities = new Object[player[turn].getPlace().getConnectedByAir().size()];
 			int i=0;
+			player[turn].resetRoute();
 			for (Place p : player[turn].getPlace().getConnectedByAir()) {
 				possibilities[i] = p.getName();
 				i++;
