@@ -1,7 +1,7 @@
-<!-- bluetoothTest ANT build system -->
-<project name="Start of Africa" default="jar" basedir=".">
+<!-- Star of Africa ANT build system -->
+<project name="Star of Africa" default="jar" basedir=".">
 	<description>
-		Ant build system for Start of Africa
+		Ant build system for Star of Africa
 	</description>
 
 	<!-- set global properties for this build -->
@@ -17,7 +17,7 @@
 	<!-- Initialize -->
 	<target name="javacompile" description="Compile Java source" >
 		<mkdir dir="${classes}"/>
-		<javac source="1.5" srcdir="${javasrc}" destdir="${classes}" nowarn="on">
+		<javac source="1.6" srcdir="${javasrc}" destdir="${classes}" nowarn="on">
 		</javac>
 	</target>
   
